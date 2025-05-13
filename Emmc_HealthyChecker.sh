@@ -1,3 +1,4 @@
+life_time=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/life_time)
 clear
 
 echo "\033[1;36m███████╗\033[31m███╗   ███╗███╗   ███╗ ██████╗";
@@ -14,7 +15,6 @@ echo "\033[32m██║  ██║\033[33m╚██████╗██║  █
 echo "\033[32m╚═╝  ╚═╝\033[33m ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝\033[0m";
 echo "                                                ";
 
-life_time=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/life_time)
 life_type_a=$(echo $life_time | awk '{print $1}')
 life_type_b=$(echo $life_time | awk '{print $2}')
 life_type_a_dec=$((16#${life_type_a#0x}))
@@ -40,10 +40,11 @@ if [ $true_life_time -gt 10 ]; then
     echo "\033[41m-----------------------"
     echo /设备eMMC寿命已耗尽，请随时做好最坏打算/
     echo "-----------------------"
-elif [ $true_life_time -lt 1 ]; then
-    echo "----------------------"
-    echo /设备eMMC未报告寿命信息/
-    echo "----------------------\033[0m"
+elif [ $true_life_time -eq 0 ]; then
+    echo "\033[41m                        "
+    echo " 设备eMMC未报告寿命信息 "
+    echo "                        \033[0m"
+    exit 0
 else
     print_true_life_time=$true_life_time
 fi
