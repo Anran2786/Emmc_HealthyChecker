@@ -37,11 +37,11 @@ else
     true_life_time=$life_type_b_dec
 fi
 if [ $true_life_time -gt 10 ]; then
-    echo "\033[41m-----------------------"
-    echo /设备eMMC寿命已耗尽，请随时做好最坏打算/
-    echo "-----------------------"
+    echo "\033[41m                               "
+    echo " 设备eMMC寿命已耗尽，请随时做好最坏打算 "
+    echo "                               "
 elif [ $true_life_time -eq 0 ]; then
-    echo "\033[41m                        "
+    echo "\033[45m                        "
     echo " 设备eMMC未报告寿命信息 "
     echo "                        \033[0m"
     exit 0
@@ -63,9 +63,10 @@ echo "  设备eMMC寿命已使用$life_percent_min%~$life_percent_max%  "
 echo "                             \033[0m"
 
 #必样的累了，回头再补下面这一坨
+echo "\033[35m———————————————————————————————————————————"
 pre_eol_info=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/pre_eol_info)
 if [ "$pre_eol_info" = "01" ]; then
-    echo 设备eMMC未进入预警状态，保留区块已用0~80%
+    echo "|设备eMMC未进入预警状态，保留区块已用0~80%|"
 elif [ "$pre_eol_info" = "02" ]; then
     echo 设备eMMC已进入预警状态，保留区块已用80~90%
 elif [ "$pre_eol_info" = "03" ]; then
@@ -73,3 +74,18 @@ elif [ "$pre_eol_info" = "03" ]; then
 else
     echo 设备eMMC未报告预警信息
 fi
+echo "———————————————————————————————————————————\033[0m"
+
+#sui:喵喵
+#soraneko:喵喵 ww
+
+echo  
+echo 其它信息：
+echo "-------------------------------------"
+date=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/date)
+date_year=$(echo $date | awk '{print substr($1,4,7)}')
+date_month=$(echo $date | awk '{print substr($1,1,2)}')
+echo "生产日期：$date_year年$date_month月"
+echo "型号：$(cat /sys/class/mmc_host/mmc0/mmc0:0001/name)"
+echo "CID：$(cat /sys/class/mmc_host/mmc0/mmc0:0001/cid)"
+echo "-------------------------------------"
