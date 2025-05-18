@@ -83,9 +83,24 @@ echo
 echo 其它信息：
 echo "-------------------------------------"
 date=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/date)
+eMMC_vendor=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/cid | awk '{print substr($1,1,2)}')
+if [ "$eMMC_vendor" = "15" ]; then
+    eMMC_vendor="三星"
+elif [ "$eMMC_vendor" = "11" ]; then
+    eMMC_vendor="东芝"
+elif [ "$eMMC_vendor" = "FE" ]; then
+    eMMC_vendor="美光"
+elif [ "$eMMC_vendor" = "90" ]; then
+    eMMC_vendor="海力士"
+elif [ "$eMMC_vendor" = "70" ]; then
+    eMMC_vendor="金士顿"
+else
+    eMMC_vendor="未收录"
+fi
 date_year=$(echo $date | awk '{print substr($1,4,7)}')
 date_month=$(echo $date | awk '{print substr($1,1,2)}')
 echo "生产日期：$date_year年$date_month月"
+echo "生产厂家：$eMMC_vendor"
 echo "型号：$(cat /sys/class/mmc_host/mmc0/mmc0:0001/name)"
 echo "CID：$(cat /sys/class/mmc_host/mmc0/mmc0:0001/cid)"
 echo "-------------------------------------"
