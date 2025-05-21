@@ -15,6 +15,7 @@ if [ -f /sys/block/mmcblk0/device/life_time ]; then
     pre_eol_info=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/pre_eol_info)
     date=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/date)
     vendor=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/cid | awk '{print substr($1,1,2)}')
+    vendor_id=$vendor
     date_year=$(echo $date | awk '{print substr($1,4,7)}')
     date_month=$(echo $date | awk '{print substr($1,1,2)}')
     name=$(cat /sys/class/mmc_host/mmc0/mmc0:0001/name)
@@ -48,6 +49,7 @@ elif [ -d /dev/block/platform/soc/1d84000.ufshc ]; then
      true_life_time=$((16#${life_time#0x}))
      pre_eol_info=$(cat /sys/devices/platform/soc/1d84000.ufshc/health_descriptor/eol_info | awk '{print substr($1,3,4)}')
      vendor=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/manufacturer_name)
+     vendor_id=$vendor
      name=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_name)
     revsion=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_revision)
     clear
@@ -130,7 +132,7 @@ elif [ "$vendor" = "70" ]; then
 elif [ "$vendor" = "45" -o "$vendor" = "WDC     " ]; then
     vendor="西部数据&闪迪"
 else
-    vendor="未收录"
+    vendor="未收录,特征码:$vendor_id"
 fi
 echo "生产厂家：$vendor"
 echo "型号：$name"
