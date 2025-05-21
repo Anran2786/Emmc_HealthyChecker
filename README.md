@@ -12,4 +12,4 @@ Goal:
 - [x] 添加UFS支持（？
 - [ ] More...（？
 
-![当前实现](sample/image.png)
+![eMMC当前实现](sample/eMMC.png)![UFS当前实现](sample/UFS.png)

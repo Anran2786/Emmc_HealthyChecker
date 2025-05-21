@@ -47,8 +47,11 @@ elif [ -d /dev/block/platform/soc/1d84000.ufshc ]; then
 
      true_life_time=$((16#${life_time#0x}))
      pre_eol_info=$(cat /sys/devices/platform/soc/1d84000.ufshc/health_descriptor/eol_info | awk '{print substr($1,3,4)}')
+     vendor=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/manufacturer_name)
+     name=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_name)
+    revsion=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_revision)
     clear
-    echo "██╗   ██╗███████╗███████╗"
+    echo "\033[35m██╗   ██╗███████╗███████╗"
     echo "██║   ██║██╔════╝██╔════╝"
     echo "██║   ██║█████╗  ███████╗"
     echo "██║   ██║██╔══╝  ╚════██║"
@@ -114,7 +117,6 @@ echo "————————————————————————�
 echo  
 echo 其它信息：
 echo "-------------------------------------"
-
 if [ "$vendor" = "15" ]; then
     vendor="三星"
 elif [ "$vendor" = "11" ]; then
@@ -125,11 +127,17 @@ elif [ "$vendor" = "90" ]; then
     vendor="海力士"
 elif [ "$vendor" = "70" ]; then
     vendor="金士顿"
+elif [ "$vendor" = "45" -o "$vendor" = "WDC     " ]; then
+    vendor="西部数据&闪迪"
 else
     vendor="未收录"
 fi
-echo "生产日期：$date_year年$date_month月"
 echo "生产厂家：$vendor"
 echo "型号：$name"
-echo "CID：$cid"
+if [ "$storage_type" = "eMMC" ]; then
+    echo "生产日期：$date_year年$date_month月"
+    echo "CID：$cid"
+else
+    echo "修订版本：$revsion"
+fi
 echo "-------------------------------------"
