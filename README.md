@@ -13,8 +13,4 @@ Goal:
 - [x] 添加UFS支持（？
 - [ ] More...（？
 
-<<<<<<< HEAD
 ![eMMC当前实现](sample/eMMC.png)![UFS当前实现](sample/UFS.png)
-=======
-![当前实现](sample/image.png)
->>>>>>> b4ba5fb2a00630966faa19f5ee7973869477985a

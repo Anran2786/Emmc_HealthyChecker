@@ -134,14 +134,10 @@ else
 fi
 echo "生产厂家：$vendor"
 echo "型号：$name"
-<<<<<<< HEAD:Emmc_HealthyChecker.sh
 if [ "$storage_type" = "eMMC" ]; then
     echo "生产日期：$date_year年$date_month月"
     echo "CID：$cid"
 else
     echo "修订版本：$revsion"
 fi
-=======
-echo "CID：$cid"
->>>>>>> b4ba5fb2a00630966faa19f5ee7973869477985a:StorageHealthyChecker.sh
 echo "-------------------------------------"
