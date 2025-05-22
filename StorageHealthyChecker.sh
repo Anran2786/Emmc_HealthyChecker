@@ -32,25 +32,25 @@ elif [ -d /dev/block/platform/soc/1d84000.ufshc ]; then
     sp=" "
     if [ -f /sys/devices/platform/soc/1d84000.ufshc/health_descriptor/life_time_estimation_a ]; then
     life_time=$(cat /sys/devices/platform/soc/1d84000.ufshc/health_descriptor/life_time_estimation_a)
-     elif [ -f /sys/devices/virtual/mi_memory/mi_memory_device/ufshcd0/dump_health_desc ]; then
-     life_time=$(grep bDeviceLifeTimeEstA /sys/devices/virtual/mi_memory/mi_memory_device/ufshcd0/dump_health_desc | cut -f2 -d '=' | cut -f2 -d ' ')
-     else
-       dump_files=$(find /sys -name "dump_*_desc" | grep ufshc)
-      for line in $dump_files; do
-        str=$(grep 'bDeviceLifeTimeEstA' "$line" | cut -f2 -d '=' | cut -f2 -d ' ')
-        if [ -n "$str" ]; then
-           life_time="$str"
-          break
-        fi
-      done
-     fi
-     #隔壁偷的
+    elif [ -f /sys/devices/virtual/mi_memory/mi_memory_device/ufshcd0/dump_health_desc ]; then
+    life_time=$(grep bDeviceLifeTimeEstA /sys/devices/virtual/mi_memory/mi_memory_device/ufshcd0/dump_health_desc | cut -f2 -d '=' | cut -f2 -d ' ')
+    else
+      dump_files=$(find /sys -name "dump_*_desc" | grep ufshc)
+     for line in $dump_files; do
+       str=$(grep 'bDeviceLifeTimeEstA' "$line" | cut -f2 -d '=' | cut -f2 -d ' ')
+       if [ -n "$str" ]; then
+          life_time="$str"
+         break
+       fi
+     done
+    fi
+    #隔壁偷的
 
-     true_life_time=$((16#${life_time#0x}))
-     pre_eol_info=$(cat /sys/devices/platform/soc/1d84000.ufshc/health_descriptor/eol_info | awk '{print substr($1,3,4)}')
-     vendor=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/manufacturer_name)
-     vendor_id=$vendor
-     name=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_name)
+    true_life_time=$((16#${life_time#0x}))
+    pre_eol_info=$(cat /sys/devices/platform/soc/1d84000.ufshc/health_descriptor/eol_info | awk '{print substr($1,3,4)}')
+    vendor=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/manufacturer_name)
+    vendor_id=$vendor
+    name=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_name)
     revsion=$(cat /sys/devices/platform/soc/1d84000.ufshc/string_descriptors/product_revision)
     clear
     echo "\033[35m██╗   ██╗███████╗███████╗"
